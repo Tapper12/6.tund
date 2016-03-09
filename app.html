@@ -2,19 +2,45 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Parooli generaator</title>
-  <script src="words.js"></script>
-  <script src="app.js"></script>
+  <title>Moosipurk v0.1</title>
+  <script src="app.js" charset="utf-8"></script>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <select name="pass-length" id="pass-length">
-    <option value="8">8</option>
-    <option value="16">16</option>
-  </select>
-  <button id="generate">Genereeri</button>
-	<ul id="container"></ul>
 
+  <nav class="menu">
+    <ul class="menu-list">
+      <li class="menu-item"><a href="#home-view" class="menu-link home-view active-menu">Avaleht</a></li>
+      <li class="menu-item"><a href="#list-view" class="menu-link list-view">Loend</a></li>
+      <li class="menu-item"><a href="#manage-view" class="menu-link manage-view">Haldus</a></li>
+    </ul>
+  </nav>
+
+  <main role="main">
+
+    <div id="list-view">
+      <h1>Loend</h1>
+      <p class="loading">Laeb...</p><br>
+      <input type="search" placeholder="Enter keyword" id="search"><br>
+      <ul class="list-of-jars"></ul>
+    </div>
+    <div id="manage-view">
+      <h1>Haldus</h1>
+
+      <label for="title">Nimi: </label><br>
+      <input type="text" name="title" class="title"><br>
+
+      <label for="ingredients">Koostis: </label><br>
+      <input type="text" name="ingredients" class="ingredients"><br>
+
+      <button class="add-new-jar pull-right">Lisa uus purk</button>
+    </div>
+
+    <div id="home-view">
+      <h1>Avaleht</h1>
+    </div>
+
+  </main>
 
 </body>
 </html>
