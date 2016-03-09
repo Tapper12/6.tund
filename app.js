@@ -1,65 +1,62 @@
 (function(){
    "use strict";
 
-   var Moosipurk = function(){
+   var Autopark = function(){
 
      // SEE ON SINGLETON PATTERN
-     if(Moosipurk.instance){
-       return Moosipurk.instance;
+     if(Autopark.instance){
+       return Autopark.instance;
      }
      //this viitab Moosipurk fn
-     Moosipurk.instance = this;
+     Autopark.instance = this;
 
-     this.routes = Moosipurk.routes;
+     this.routes = Autopark.routes;
      // this.routes['home-view'].render()
 
-     console.log('moosipurgi sees');
+     console.log('autopargi sees');
 
-     // KÕIK muuutujad, mida muudetakse ja on rakendusega seotud defineeritakse siin
+     // KÃ•IK muuutujad, mida muudetakse ja on rakendusega seotud defineeritakse siin
      this.click_count = 0;
      this.currentRoute = null;
      console.log(this);
 
-     // hakkan hoidma kõiki purke
-     this.jars = [];
+     // hakkan hoidma kÃµiki purke
+     this.cars = [];
 
      // Kui tahan Moosipurgile referenci siis kasutan THIS = MOOSIPURGI RAKENDUS ISE
      this.init();
    };
 
-   window.Moosipurk = Moosipurk; // Paneme muuutja külge
+   window.Autopark = Autopark; // Paneme muuutja kÃ¼lge
 
-   Moosipurk.routes = {
+   Autopark.routes = {
      'home-view': {
        'render': function(){
-         // käivitame siis kui lehte laeme
+         // kÃ¤ivitame siis kui lehte laeme
          console.log('>>>>avaleht');
        }
      },
      'list-view': {
        'render': function(){
-         // käivitame siis kui lehte laeme
+         // kÃ¤ivitame siis kui lehte laeme
          console.log('>>>>loend');
 
          //simulatsioon laeb kaua
-         window.setTimeout(function(){
-           document.querySelector('.loading').innerHTML = 'laetud!';
-         }, 3000);
 
        }
      },
      'manage-view': {
        'render': function(){
-         // käivitame siis kui lehte laeme
+         // kÃ¤ivitame siis kui lehte laeme
        }
      }
    };
 
-   // Kõik funktsioonid lähevad Moosipurgi külge
-   Moosipurk.prototype = {
+   // KÃµik funktsioonid lÃ¤hevad Moosipurgi kÃ¼lge
+   Autopark.prototype = {
 
      init: function(){
-       console.log('Rakendus läks tööle');
+       console.log('Rakendus lÃ¤ks tÃ¶Ã¶le');
 
        //kuulan aadressirea vahetust
        window.addEventListener('hashchange', this.routeChange.bind(this));
@@ -67,25 +64,25 @@
        // kui aadressireal ei ole hashi siis lisan juurde
        if(!window.location.hash){
          window.location.hash = 'home-view';
-         // routechange siin ei ole vaja sest käsitsi muutmine käivitab routechange event'i ikka
+         // routechange siin ei ole vaja sest kÃ¤sitsi muutmine kÃ¤ivitab routechange event'i ikka
        }else{
-         //esimesel käivitamisel vaatame urli üle ja uuendame menüüd
+         //esimesel kÃ¤ivitamisel vaatame urli Ã¼le ja uuendame menÃ¼Ã¼d
          this.routeChange();
        }
 
-       //saan kätte purgid localStorage kui on
-       if(localStorage.jars){
-           //võtan stringi ja teen tagasi objektideks
-           this.jars = JSON.parse(localStorage.jars);
-           console.log('laadisin localStorageist massiiivi ' + this.jars.length);
+       //saan kÃ¤tte purgid localStorage kui on
+       if(localStorage.cars){
+           //vÃµtan stringi ja teen tagasi objektideks
+           this.cars = JSON.parse(localStorage.cars);
+           console.log('laadisin localStorageist massiiivi ' + this.cars.length);
 
            //tekitan loendi htmli
-           this.jars.forEach(function(jar){
+           this.cars.forEach(function(car){
 
-               var new_jar = new Jar(jar.title, jar.ingredients);
+               var new_car = new Car(car.mark, car.model, car.year);
 
-               var li = new_jar.createHtmlElement();
-               document.querySelector('.list-of-jars').appendChild(li);
+               var li = new_car.createHtmlElement();
+               document.querySelector('.list-of-cars').appendChild(li);
 
            });
 
@@ -98,29 +95,31 @@
      },
 
      bindEvents: function(){
-       document.querySelector('.add-new-jar').addEventListener('click', this.addNewClick.bind(this));
+       document.querySelector('.add-new-car').addEventListener('click', this.addNewClick.bind(this));
+       document.querySelector('.change-car').addEventListener('click', this.changeNewClick.bind(this));
+       document.querySelector('.delete-car').addEventListener('click', this.deleteNewClick.bind(this));
 
-       //kuulan trükkimist otsikastis
+       //kuulan trÃ¼kkimist otsikastis
        document.querySelector('#search').addEventListener('keyup', this.search.bind(this));
 
      },
 
      search: function(event){
-         //otsikasti väärtus
+         //otsikasti vÃ¤Ã¤rtus
          var needle = document.querySelector('#search').value.toLowerCase();
          console.log(needle);
 
-         var list = document.querySelectorAll('ul.list-of-jars li');
+         var list = document.querySelectorAll('ul.list-of-cars li');
          console.log(list);
 
          for(var i = 0; i < list.length; i++){
 
              var li = list[i];
 
-             // ühe listitemi sisu tekst
+             // Ã¼he listitemi sisu tekst
              var stack = li.querySelector('.content').innerHTML.toLowerCase();
 
-             //kas otsisõna on sisus olemas
+             //kas otsisÃµna on sisus olemas
              if(stack.indexOf(needle) !== -1){
                  //olemas
                  li.style.display = 'list-item';
@@ -138,36 +137,82 @@
        //salvestame purgi
        //console.log(event);
 
-       var title = document.querySelector('.title').value;
-       var ingredients = document.querySelector('.ingredients').value;
+       var mark = document.querySelector('.mark').value;
+       var model = document.querySelector('.model').value;
+       var year = document.querySelector('.year').value;
 
-       //console.log(title + ' ' + ingredients);
+       //console.log(mark + ' ' + model);
        //1) tekitan uue Jar'i
-       var new_jar = new Jar(title, ingredients);
+       var new_car = new Car(mark, model, year);
 
        //lisan massiiivi purgi
-       this.jars.push(new_jar);
-       console.log(JSON.stringify(this.jars));
+       this.cars.push(new_car);
+       console.log(JSON.stringify(this.cars));
        // JSON'i stringina salvestan localStorage'isse
-       localStorage.setItem('jars', JSON.stringify(this.jars));
+       localStorage.setItem('cars', JSON.stringify(this.cars));
 
        // 2) lisan selle htmli listi juurde
-       var li = new_jar.createHtmlElement();
-       document.querySelector('.list-of-jars').appendChild(li);
+       var li = new_car.createHtmlElement();
+       document.querySelector('.list-of-cars').appendChild(li);
+
+
+     },
+     changeNewClick: function(event){
+
+
+       var mark = document.querySelector('.mark').value;
+       var model = document.querySelector('.model').value;
+       var year = document.querySelector('.year').value;
+
+
+       var new_car = new Car(mark, model, year);
+
+       //lisan massiiivi purgi
+       this.cars.push(new_car);
+       console.log(JSON.stringify(this.cars));
+       // JSON'i stringina salvestan localStorage'isse
+       localStorage.setItem('cars', JSON.stringify(this.cars));
+
+       // 2) lisan selle htmli listi juurde
+       var li = new_car.createHtmlElement();
+       document.querySelector('.list-of-cars').appendChild(li);
+
+
+     },
+     deleteNewClick: function(event){
+
+
+       var mark = document.querySelector('.mark').value;
+       var model = document.querySelector('.model').value;
+       var year = document.querySelector('.year').value;
+
+       //console.log(mark + ' ' + model);
+       //1) tekitan uue Jar'i
+       var delete_car = delete Car(mark, model, year);
+
+       //lisan massiiivi purgi
+       this.cars.push(delete_car);
+       console.log(JSON.stringify(this.cars));
+       // JSON'i stringina salvestan localStorage'isse
+       localStorage.setItem('cars', JSON.stringify(this.cars));
+
+       // 2) lisan selle htmli listi juurde
+       var li = new_car.createHtmlElement();
+       document.querySelector('.list-of-cars').appendChild(li);
 
 
      },
 
      routeChange: function(event){
 
-       //kirjutan muuutujasse lehe nime, võtan maha #
+       //kirjutan muuutujasse lehe nime, vÃµtan maha #
        this.currentRoute = location.hash.slice(1);
        console.log(this.currentRoute);
 
        //kas meil on selline leht olemas?
        if(this.routes[this.currentRoute]){
 
-         //muudan menüü lingi aktiivseks
+         //muudan menÃ¼Ã¼ lingi aktiivseks
          this.updateMenu();
 
          this.routes[this.currentRoute].render();
@@ -182,7 +227,7 @@
 
      updateMenu: function() {
        //http://stackoverflow.com/questions/195951/change-an-elements-class-with-javascript
-       //1) võtan maha aktiivse menüülingi kui on
+       //1) vÃµtan maha aktiivse menÃ¼Ã¼lingi kui on
        document.querySelector('.active-menu').className = document.querySelector('.active-menu').className.replace('active-menu', '');
 
        //2) lisan uuele juurde
@@ -191,32 +236,24 @@
 
      }
 
-   }; // MOOSIPURGI LÕPP
+   }; // MOOSIPURGI LÃ•PP
 
-   var Jar = function(new_title, new_ingredients){
-     this.title = new_title;
-     this.ingredients = new_ingredients;
-     console.log('created new jar');
+   var Car = function(new_mark, new_model, new_year){
+     this.mark = new_mark;
+     this.model = new_model;
+     this.year = new_year;
+     console.log('created new Car');
    };
 
-   Jar.prototype = {
+   Car.prototype = {
      createHtmlElement: function(){
-
-       // võttes title ja ingredients ->
-       /*
-       li
-        span.letter
-          M <- title esimene täht
-        span.content
-          title | ingredients
-       */
 
        var li = document.createElement('li');
 
        var span = document.createElement('span');
        span.className = 'letter';
 
-       var letter = document.createTextNode(this.title.charAt(0));
+       var letter = document.createTextNode(this.mark.charAt(0));
        span.appendChild(letter);
 
        li.appendChild(span);
@@ -224,7 +261,7 @@
        var span_with_content = document.createElement('span');
        span_with_content.className = 'content';
 
-       var content = document.createTextNode(this.title + ' | ' + this.ingredients);
+       var content = document.createTextNode(this.mark + ' | ' + this.model + ' | ' + this.year);
        span_with_content.appendChild(content);
 
        li.appendChild(span_with_content);
@@ -234,9 +271,9 @@
      }
    };
 
-   // kui leht laetud käivitan Moosipurgi rakenduse
+   // kui leht laetud kÃ¤ivitan Moosipurgi rakenduse
    window.onload = function(){
-     var app = new Moosipurk();
+     var app = new Autopark();
    };
 
 })();

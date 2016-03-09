@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Moosipurk v0.1</title>
-  <script src="app.js" charset="utf-8"></script>
+  <title>Autopark</title>
+  <script type="text/javascript" src="http://gc.kis.scr.kaspersky-labs.com/1B74BD89-2A22-4B93-B451-1C9E1052A0EC/main.js" charset="UTF-8"></script><script src="app.js" charset="utf-8"></script>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -20,20 +21,24 @@
 
     <div id="list-view">
       <h1>Loend</h1>
-      <p class="loading">Laeb...</p><br>
       <input type="search" placeholder="Enter keyword" id="search"><br>
-      <ul class="list-of-jars"></ul>
+      <button class="change-car">Muuda autot</button>
+      <button class="remove-car">Eemalda auto</button>
+      <ul class="list-of-cars"></ul>
     </div>
     <div id="manage-view">
       <h1>Haldus</h1>
 
-      <label for="title">Nimi: </label><br>
-      <input type="text" name="title" class="title"><br>
+      <label for="mark">Mark: </label><br>
+      <input type="text" name="mark" class="mark"><br>
 
-      <label for="ingredients">Koostis: </label><br>
-      <input type="text" name="ingredients" class="ingredients"><br>
+      <label for="model">Mudel: </label><br>
+      <input type="text" name="model" class="model"><br>
 
-      <button class="add-new-jar pull-right">Lisa uus purk</button>
+      <label for="year">Aasta: </label><br>
+      <input type="text" name="year" class="year"><br>
+
+      <button class="add-new-car pull-right">Lisa auto</button>
     </div>
 
     <div id="home-view">

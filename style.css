@@ -85,9 +85,10 @@ main > *:target ~ * {
 .pull-right {
     float: right;
 }
-.title,
-.ingredients,
-.date {
+.mark,
+.model,
+.year,
+#search {
     width: 100%;
     margin-bottom: 10px;
     margin-top: 4px;
@@ -95,7 +96,9 @@ main > *:target ~ * {
     border: 0;
     border-bottom: 1px solid rgb(146, 168, 209);
 }
-.add-new-jar {
+.add-new-car,
+.change-car,
+.remove-car{
     background-color: #fff;
     padding: 10px;
     border: 2px solid rgb(146, 168, 209);
@@ -117,12 +120,12 @@ td {
     color: rgb(146, 168, 209);
     border: 1px solid rgb(146, 168, 209);
 }
-.list-of-jars {
+.list-of-cars {
     list-style-type: none;
     padding-left: 0;
     margin-bottom: 60px;
 }
-.list-of-jars li {
+.list-of-cars li {
     margin-bottom: 10px;
 
 }
