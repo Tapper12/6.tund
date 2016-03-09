@@ -56,7 +56,7 @@
    Autopark.prototype = {
 
      init: function(){
-       console.log('Rakendus lÃ¤ks tÃ¶Ã¶le');
+       //console.log('Rakendus lÃ¤ks tÃ¶Ã¶le');
 
        //kuulan aadressirea vahetust
        window.addEventListener('hashchange', this.routeChange.bind(this));
@@ -74,7 +74,7 @@
        if(localStorage.cars){
            //vÃµtan stringi ja teen tagasi objektideks
            this.cars = JSON.parse(localStorage.cars);
-           console.log('laadisin localStorageist massiiivi ' + this.cars.length);
+           //console.log('laadisin localStorageist massiiivi ' + this.cars.length);
 
            //tekitan loendi htmli
            this.cars.forEach(function(car){
@@ -102,13 +102,50 @@
 
      },
 
+     deleteCar: function(event){
+       //Millele vajutasin SPAN
+       //console.log(event.target);
+       //Tema parent ehk mille sees on LI
+       //console.log(event.target.parentNode);
+       //Mille sees see on UL
+       //console.log(event.target.parentNode.parentNode);
+
+       //id
+       //console.log(event.target.dataset.id);
+
+       var c = confirm("Oled kindel?");
+
+       if(!c){
+         return;
+
+       }
+       console.log('kustutan');
+
+       var ul = event.target.parentNode.parentNode;
+       var li = event.target.parentNode;
+       var delete_id = event.target.dataset.id;
+
+       ul.removeChild(li);
+
+       for(var i = 0; i< this.cars.length; i++){
+
+         if(this.cars[i].id == delete_id){
+           this.cars.splice(i, 1);
+           break;
+         }
+       }
+       localStorage.setItem('cars', JSON.stringify(this.cars));
+
+
+     },
+
      search: function(event){
          //otsikasti vÃ¤Ã¤rtus
          var needle = document.querySelector('#search').value.toLowerCase();
-         console.log(needle);
+         //console.log(needle);
 
          var list = document.querySelectorAll('ul.list-of-cars li');
-         console.log(list);
+         //console.log(list);
 
          for(var i = 0; i < list.length; i++){
 
@@ -145,7 +182,7 @@
 
        //lisan massiiivi purgi
        this.cars.push(new_car);
-       console.log(JSON.stringify(this.cars));
+       //console.log(JSON.stringify(this.cars));
        // JSON'i stringina salvestan localStorage'isse
        localStorage.setItem('cars', JSON.stringify(this.cars));
 
@@ -160,7 +197,7 @@
 
        //kirjutan muuutujasse lehe nime, vÃµtan maha #
        this.currentRoute = location.hash.slice(1);
-       console.log(this.currentRoute);
+       //console.log(this.currentRoute);
 
        //kas meil on selline leht olemas?
        if(this.routes[this.currentRoute]){
@@ -223,13 +260,14 @@
        var span_delete = document.createElement('span');
        span_delete.style.color = "red";
        span_delete.style.cursor = "pointer";
-       
+
        //Kustutamiseks id kaasa
        span_delete.setAttribute("data-id", this.id);
 
        span_delete.innerHTML = " Delete";
        li.appendChild(span_delete);
 
+       span_delete.addEventListener("click", Autopark.instance.deleteCar.bind(Autopark.instance));
        return li;
 
      }
