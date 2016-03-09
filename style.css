@@ -96,9 +96,7 @@ main > *:target ~ * {
     border: 0;
     border-bottom: 1px solid rgb(146, 168, 209);
 }
-.add-new-car,
-.change-car,
-.remove-car{
+.add-new-car{
     background-color: #fff;
     padding: 10px;
     border: 2px solid rgb(146, 168, 209);
